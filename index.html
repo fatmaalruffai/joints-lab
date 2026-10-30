@@ -88,7 +88,7 @@ details ul,details ol{margin:6px 0 2px;padding-left:20px}
 #hud3{position:absolute;left:10px;top:8px;font-weight:700;font-size:.95rem;pointer-events:none}
 #tip3{position:absolute;right:10px;bottom:8px;font-size:.75rem;color:var(--mute);pointer-events:none}
 .codebox{position:relative}.codebox .btn{position:absolute;right:6px;top:6px;padding:4px 9px;font-size:.8rem}
-#kneeBox{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
+#kneeBox{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
 .kh{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;align-items:baseline}
 #kneeT{font-weight:700;font-variant-numeric:tabular-nums}#kneeT.warn{color:var(--warn)}
 #knee{max-width:420px;margin:4px auto 0}
@@ -141,8 +141,19 @@ table{border-collapse:collapse;width:100%;font-size:.88rem;margin:6px 0}th,td{bo
 <text id="angLbl" x="12" y="24" font-size="15" font-weight="700" fill="var(--ink)" display="none">0°</text>
 </svg>
 <p class="small" style="margin:6px 4px 0">The book's joint model, built from your kit: Lego Technic beams, the grey 270° servo and the Kidsuno mainboard. Use <b>Side</b> to watch the joint bend.</p>
+</div>
+
+<div>
+<!-- Step 1 -->
+<section class="card panel" id="p0">
+<h2>1. Build the joint model (book steps 1–3)</h2>
+<p>A physical therapist needs a simple model to show patients how a hinge joint moves, like a knee. Follow the book: choose the part for each step. Some parts in the tray are not needed.</p>
+<div class="msg" id="m0"></div>
+<div class="tray" id="tray"></div>
 <div id="kneeBox">
-<div class="kh"><b>Your knee moves the same way</b><span id="kneeT">Straight leg: 0°</span></div>
+<div class="kh"><b>Meet the real knee joint</b><span id="kneeT">Straight leg: 0°</span></div>
+<p class="small" style="margin:2px 0 4px">Your Lego model copies this joint. Drag the slider to bend the knee, and drag the model to turn it.</p>
+<label for="kS"><b>Bend the knee</b></label><input type="range" id="kS" min="0" max="150" value="0">
 <div class="vbar" style="margin-top:4px"><button class="btn on" id="k3b">3D knee model</button><button class="btn" id="k2b">Labelled drawing</button></div>
 <div id="kv3" style="position:relative;border-radius:8px;overflow:hidden;background:linear-gradient(var(--stage),var(--tray))"><canvas id="kcv" style="display:block;width:100%;touch-action:none;cursor:grab" aria-label="3D model of a human knee joint. Drag to turn it."></canvas><div style="position:absolute;right:10px;bottom:6px;font-size:.75rem;color:var(--mute);pointer-events:none">Drag to turn · scroll or pinch to zoom</div></div>
 <p class="small" id="kneeLeg" style="margin:4px 4px 0"><b>White:</b> bones (femur, tibia, fibula, patella) · <b style="color:#c9806a">Pink:</b> ligaments and tendons that hold the knee together · <b>Cream rings:</b> menisci (cartilage cushions)</p>
@@ -170,15 +181,6 @@ table{border-collapse:collapse;width:100%;font-size:.88rem;margin:6px 0}th,td{bo
 </svg>
 <p class="small" style="margin:2px 4px 0">The robot joint and your knee are both hinge joints: they open and close in one direction, like a door. A real knee bends only about 135°.</p>
 </div>
-</div>
-
-<div>
-<!-- Step 1 -->
-<section class="card panel" id="p0">
-<h2>1. Build the joint model (book steps 1–3)</h2>
-<p>A physical therapist needs a simple model to show patients how a hinge joint moves, like a knee. Follow the book: choose the part for each step. Some parts in the tray are not needed.</p>
-<div class="msg" id="m0"></div>
-<div class="tray" id="tray"></div>
 <p class="credit">© 2026 Fatma Alruffai</p>
 </section>
 <!-- Step 2 -->
@@ -513,7 +515,7 @@ const J3=(function(){try{if(!window.THREE)throw new Error('three.js did not load
   if(spin)st.th+=dt*0.6;
   const s=servo.position,d=[sTo[0]-s.x,sTo[1]-s.y,sTo[2]-s.z];if(Math.abs(d[0])+Math.abs(d[1])+Math.abs(d[2])>0.01){const k=Math.min(1,dt*3);s.x+=d[0]*k;s.y+=d[1]*k;s.z+=d[2]*k;cable()}
   holder.position.set(s.x,0.5+2.6,0);
-  const x0=s.x+1.3,x1=-1.6,L=Math.max(0.01,x1-x0);laxM.scale.y=L;laxM.position.set((x0+x1)/2,H,0);lax.visible=G.laxle.userData.on&&L>0.15;
+  const x0=s.x+1.3,x1=-1.6,L=Math.max(0.01,x1-x0);laxM.scale.y=L;laxM.position.set((x0+x1)/2,H,0);lax.visible=!!(G.laxle.userData.on&&L>0.15);
   pivot.rotation.x=-a*Math.PI/180;const ra=Math.round(a);if(ra!=wA){wA=ra;wedge.geometry.dispose();wedge.geometry=new THREE.CircleGeometry(7.0,48,0,Math.max(0.001,ra*Math.PI/180))}
   place();R.render(sc,cam)}
  return{show:n=>{if(G[n]){G[n].visible=true;G[n].userData.on=true}},servoTo:k=>{sTo=SP[k].slice()},frame,el:box};
@@ -858,13 +860,13 @@ function tick(t){
  const a=Math.round(ang),rad=(ang*Math.PI/180);$('angLbl').textContent=a+'° = '+(a%180==0?(a==0?'0':'π'):(+(a/180).toFixed(2))+'π')+' rad';
  $('sDeg').textContent=a+'°';$('sRad').textContent=rad.toFixed(2);
  checkTasks();
- knee(ang);
- if(KN&&!$('kv3').hidden)KN.frame(Math.min(140,Math.round(ang)));
+ const kA=+$('kS').value;knee(kA);
+ if(step==0&&KN&&!$('kv3').hidden)KN.frame(Math.min(140,kA));
  if(J3&&!$('v3').hidden){J3.frame(ang,dt);$('hud3').textContent=connected?$('angLbl').textContent:''}
  if(AC)servoWhine(connected&&(step==2||step==4)?speed:0);
  if(step==7){const sp=+$('dspd').value/100;dPh+=dt*sp*2.2;const tt=(1-Math.cos(dPh))/2;exA(tt);exB(tt);design(tt)}
  requestAnimationFrame(tick);
 }
 requestAnimationFrame(tick);
-drawTray();msg('m0','Step 1: '+order[0][2],'',true);nav();
+drawTray();msg('m0',order[0][2],'',true);nav();
 </script>
