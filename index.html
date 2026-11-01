@@ -870,3 +870,14 @@ function tick(t){
 requestAnimationFrame(tick);
 drawTray();msg('m0',order[0][2],'',true);nav();
 </script>
+<script>
+/* Visitor counter (GoatCounter, no cookies, no names). Counts each step once per visit. */
+(function(){var LAB='joints',NAME='Joints lab',Q=[];
+ function send(){if(!window.goatcounter||!window.goatcounter.count)return;while(Q.length){var e=Q.shift();window.goatcounter.count({path:LAB+'/'+e[0],title:e[1],event:true})}}
+ function ev(id,title){try{if(sessionStorage.getItem('gc-'+LAB+'-'+id))return;sessionStorage.setItem('gc-'+LAB+'-'+id,'1')}catch(x){}Q.push([id,NAME+': '+title]);send()}
+ function slug(s){return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+ setInterval(send,2000);
+ try{var g=window.go;window.go=function(i){g(i);if(i>=1&&i<=4)ev('step-'+(i+1)+'-'+slug(S[i]),'reached step '+(i+1)+' '+S[i]);if(i==6)ev('challenges','opened challenges');if(i==7)ev('other-designs','opened other designs')};var f=document.getElementById('fin');if(f)new MutationObserver(function(){if(!f.hidden)ev('finished','finished the project')}).observe(f,{attributes:true,attributeFilter:['hidden']});}catch(x){}
+})();
+</script>
+<script data-goatcounter="https://fatmajoy.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
